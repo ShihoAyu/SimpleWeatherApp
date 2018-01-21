@@ -4,6 +4,8 @@
     <string name="setting">Setting</string>
     <string name="search_city">Enter city</string>
 
-    <string name="query_setting">querySetting</string>
+    <string name="units">Units</string>
+    <string name="units_title">Units of temperature</string>
+
     <string name="units_key">units</string>
 </resources>

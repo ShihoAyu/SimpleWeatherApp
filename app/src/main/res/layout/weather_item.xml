@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/text_weather_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="weather_main" />
+
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:text="01/01/2018" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            tools:text="temperature" />
+
+        <TextView
+            android:id="@+id/text_temp_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="min" />
+
+        <TextView
+            android:id="@+id/text_temp_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="max" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

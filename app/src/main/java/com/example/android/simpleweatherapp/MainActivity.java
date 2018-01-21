@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
@@ -15,14 +15,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<WeatherInfo>> {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final String BASE_QUERY_URL = "http://api.openweathermap.org/data/2.5/weather";
+    private static final String BASE_QUERY_URL = "http://api.openweathermap.org/data/2.5/forecast";
     private static final String AUTHORITY = "e81cc0aeb1ec62bb64454c103d60f5e5";
 
     private EditText editSearchCity;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private FusedLocationProviderClient locationProviderClient;
 
+    WeatherListAdapter WListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
             });
         }
+
+        List<WeatherInfo> weatherInfoList = new ArrayList<>();
+        WListAdapter = new WeatherListAdapter(this, weatherInfoList);
+
+        ListView resultList = (ListView) findViewById(R.id.list_result);
+        resultList.setAdapter(WListAdapter);
 
         loaderManager = getSupportLoaderManager();
     }
@@ -97,17 +108,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
+    public Loader<List<WeatherInfo>> onCreateLoader(int id, Bundle args) {
         return new HttpQueryTask(this, args.getString("url"));
     }
 
     @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(LOG_TAG, "Data retrieved: " + data);
+    public void onLoadFinished(Loader<List<WeatherInfo>> loader, List<WeatherInfo> weathers) {
+        WListAdapter.clear();
+
+        if (weathers != null) {
+            WListAdapter.addAll(weathers);
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<String> loader) {
+    public void onLoaderReset(Loader<List<WeatherInfo>> loader) {
+
     }
 
     private void search() {
@@ -117,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Bundle inputData = new Bundle();
         inputData.putString("url", queryUrl);
 
-        loaderManager.initLoader(1, inputData, this);
+        loaderManager.restartLoader(1, inputData, this);
     }
 
     private String createQuery(String city) {
@@ -136,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return queryUrl;
     }
 
-    private String createQuery(@NonNull String latitude, @NonNull String longitude) {
+    private String createQuery(String latitude, String longitude) {
         String queryUrl;
 
         Uri.Builder builder = Uri.parse(BASE_QUERY_URL).buildUpon()
@@ -153,18 +169,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void getUnits() {
-        int unitsValue = getSharedPreferences(getString(R.string.query_setting), MODE_PRIVATE).getInt(getString(R.string.units_key), 0);
+        units = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.units_key), "standard");
 
-        Log.d(LOG_TAG, "Units value: " + unitsValue);
-
-        switch (unitsValue) {
-            case SettingActivity.UNIT_KELVIN:
-                units = "standard";
-                break;
-            case SettingActivity.UNIT_CELSIUS:
-                units = "metric";
-                break;
-        }
+        Log.d(LOG_TAG, "Units value: " + units);
     }
 
 }

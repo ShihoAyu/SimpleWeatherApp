@@ -8,12 +8,14 @@ import com.example.android.simpleweatherapp.utils.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by t on 1/17/2018.
  */
 
-public class HttpQueryTask extends AsyncTaskLoader<String> {
+public class HttpQueryTask extends AsyncTaskLoader<List<WeatherInfo>> {
     private static final String LOG_TAG = HttpQueryTask.class.getSimpleName();
     private String mUrl;
 
@@ -33,18 +35,22 @@ public class HttpQueryTask extends AsyncTaskLoader<String> {
     }
 
     @Override
-    public String loadInBackground() {
-        String data = "";
+    public List<WeatherInfo> loadInBackground() {
+        List<WeatherInfo> weathers = new ArrayList<WeatherInfo>();
 
         try {
             if (mUrl != null && !mUrl.isEmpty()) {
                 URL mHttpUrl = NetworkUtils.createURL(mUrl);
-                data = NetworkUtils.requestData(mHttpUrl);
+                String data = NetworkUtils.requestData(mHttpUrl);
+
+                Log.d(LOG_TAG, "Data retrieved: " + data);
+
+                weathers = NetworkUtils.parseData(data);
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, "cannot close InputStream object");
         }
 
-        return data;
+        return weathers;
     }
 }
