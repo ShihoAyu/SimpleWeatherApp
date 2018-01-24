@@ -32,11 +32,9 @@ public class WeatherListAdapter extends ArrayAdapter<WeatherInfo> {
 
         WeatherInfo weatherInfo = getItem(position);
 
-        ((TextView) listView.findViewById(R.id.text_weather_main)).setText(weatherInfo.getWeatherMain());
-        ((TextView) listView.findViewById(R.id.text_temp)).setText(String.valueOf(weatherInfo.getTemp()));
-        ((TextView) listView.findViewById(R.id.text_temp_min)).setText(String.valueOf(weatherInfo.getTempMin()));
-        ((TextView) listView.findViewById(R.id.text_temp_max)).setText(String.valueOf(weatherInfo.getTempMax()));
-        ((TextView) listView.findViewById(R.id.text_time)).setText(String.valueOf(weatherInfo.getTime()));
+        ((TextView) listView.findViewById(R.id.item_1_weather_main)).setText(weatherInfo.getWeatherMain());
+        ((TextView) listView.findViewById(R.id.item_1_weather_temp)).setText(String.valueOf(weatherInfo.getTemp()));
+        ((TextView) listView.findViewById(R.id.item_1_weather_time)).setText(weatherInfo.getTime());
 
         return listView;
     }

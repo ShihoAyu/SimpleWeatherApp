@@ -1,12 +1,9 @@
 package com.example.android.simpleweatherapp;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 public class SettingActivity extends AppCompatActivity {
     private static final String LOG_TAG = SettingActivity.class.getSimpleName();
@@ -24,5 +21,6 @@ public class SettingActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
         }
+
     }
 }

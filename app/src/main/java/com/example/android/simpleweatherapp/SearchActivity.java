@@ -1,28 +1,18 @@
 package com.example.android.simpleweatherapp;
 
-import android.Manifest;
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.example.android.simpleweatherapp.utils.NetworkUtils;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +25,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
     private LoaderManager loaderManager;
 
     private ListFragment listFragment;
+    private Fragment currentWeatherFragment;
 
     // private FusedLocationProviderClient locationProviderClient;
 
@@ -45,26 +36,30 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        if (savedInstanceState == null) {
-            findViewById(R.id.button_search).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    search();
-                }
-            });
+        loaderManager = getLoaderManager();
+        editSearchCity = (EditText) findViewById(R.id.edit_search_city);
 
-            loaderManager = getLoaderManager();
+        findViewById(R.id.button_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search();
+            }
+        });
 
-            editSearchCity = (EditText) findViewById(R.id.edit_search_city);
+        ArrayList<WeatherInfo> weatherList = new ArrayList<>();
+        WListAdapter = new WeatherListAdapter(this, weatherList);
 
-            ArrayList<WeatherInfo> weatherList = new ArrayList<>();
-            WListAdapter = new WeatherListAdapter(this, weatherList);
+        listFragment = new Fragments.ForecastListFragment();
+        listFragment.setRetainInstance(true);
+        listFragment.setListAdapter(WListAdapter);
 
-            listFragment = new MainFragment.ForecastListFragment();
-            listFragment.setListAdapter(WListAdapter);
+        currentWeatherFragment = new Fragments.CardFragment();
+        currentWeatherFragment.setRetainInstance(true);
 
-            getFragmentManager().beginTransaction().add(R.id.container_forecast_list_2, listFragment, "forecast_list_2").commit();
-        }
+        getFragmentManager().beginTransaction()
+                .add(R.id.search_current_container, currentWeatherFragment, "current_weather")
+                .add(R.id.search_list_container, listFragment, "search_list")
+                .commit();
     }
 
     @Override
@@ -74,8 +69,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
+        getMenuInflater().inflate(R.menu.search_menu, menu);
         return true;
     }
 
@@ -108,18 +102,20 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoaderReset(Loader<List<WeatherInfo>> loader) {
-
+        if (!WListAdapter.isEmpty()) {
+            WListAdapter.clear();
+        }
     }
 
     private void search() {
         String city = editSearchCity.getText().toString();
-        String queryUrl = NetworkUtils.createQuery(this, city);
+        String queryUrl = NetworkUtils.createQuery(this, city, "forecast");
 
         Bundle inputData = new Bundle();
         inputData.putString("url", queryUrl);
 
         loaderManager.restartLoader(1, inputData, this);
+        ((Fragments.CardFragment) currentWeatherFragment).startLoader(city);
     }
-
 
 }

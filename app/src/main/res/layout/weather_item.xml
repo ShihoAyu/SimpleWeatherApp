@@ -1,53 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/text_weather_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="weather_main" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:padding="4dp">
 
-    <TextView
-        android:id="@+id/text_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        tools:text="01/01/2018" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:gravity="end"
-        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/item_1_weather_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/simple_icon" />
 
         <TextView
-            android:id="@+id/text_temp"
+            android:id="@+id/item_1_weather_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            tools:text="temperature" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/item_1_weather_image"
+            android:layout_toRightOf="@id/item_1_weather_image"
+            tools:text="weather_main" />
 
         <TextView
-            android:id="@+id/text_temp_min"
+            android:id="@+id/item_1_weather_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="min" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
+            tools:text="01/01/2018" />
 
         <TextView
-            android:id="@+id/text_temp_max"
+            android:id="@+id/item_1_weather_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="max" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:textSize="15sp"
+            tools:text="0°C" />
 
-    </LinearLayout>
-
-
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

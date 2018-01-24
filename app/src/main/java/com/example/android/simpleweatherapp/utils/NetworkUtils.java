@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.android.simpleweatherapp.R;
-import com.example.android.simpleweatherapp.SearchActivity;
 import com.example.android.simpleweatherapp.WeatherInfo;
 
 import org.json.JSONArray;
@@ -32,7 +31,7 @@ public class NetworkUtils {
 
     private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String BASE_QUERY_URL = "http://api.openweathermap.org/data/2.5/forecast";
+    private static final String BASE_QUERY_URL = "http://api.openweathermap.org/data/2.5";
     private static final String AUTHORITY = "e81cc0aeb1ec62bb64454c103d60f5e5";
 
     private NetworkUtils() {}
@@ -109,8 +108,6 @@ public class NetworkUtils {
     }
 
     private static WeatherInfo getWeatherInfo(JSONObject dataObject) throws JSONException {
-        WeatherInfo weatherInfo;
-
         long time = dataObject.getLong(WeatherInfo.KEY_TIME_UNIX);
 
         JSONObject main = dataObject.getJSONObject("main");
@@ -132,14 +129,15 @@ public class NetworkUtils {
         bundle.putString(WeatherInfo.KEY_WEATHER_DESCRIPTION, weatherDescription);
         bundle.putLong(WeatherInfo.KEY_TIME_UNIX, time);
 
-        return weatherInfo = new WeatherInfo(bundle);
+        return new WeatherInfo(bundle);
     }
 
-    public static String createQuery(Context context, String city) {
+    public static String createQuery(Context context, String city, String type) {
         String queryUrl = null;
 
         if (city != null && !city.isEmpty()) {
             Uri.Builder builder = (Uri.parse(BASE_QUERY_URL)).buildUpon()
+                    .appendPath(type)
                     .appendQueryParameter("q", city)
                     .appendQueryParameter("units", PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.units_key), "standard"))
                     .appendQueryParameter("appid", AUTHORITY);
@@ -151,10 +149,11 @@ public class NetworkUtils {
         return queryUrl;
     }
 
-    public static String createQuery(Context context, String latitude, String longitude) {
+    public static String createQuery(Context context, String latitude, String longitude, String type) {
         String queryUrl;
 
         Uri.Builder builder = Uri.parse(BASE_QUERY_URL).buildUpon()
+                .appendPath(type)
                 .appendQueryParameter("lat", latitude)
                 .appendQueryParameter("lon", longitude)
                 .appendQueryParameter("units", PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.units_key), "standard"))
