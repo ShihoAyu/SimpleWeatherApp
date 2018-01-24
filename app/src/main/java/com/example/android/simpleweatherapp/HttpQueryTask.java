@@ -3,6 +3,7 @@ package com.example.android.simpleweatherapp;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.android.simpleweatherapp.utils.NetworkUtils;
 
@@ -16,12 +17,20 @@ import java.util.List;
  */
 
 public class HttpQueryTask extends AsyncTaskLoader<List<WeatherInfo>> {
+
     private static final String LOG_TAG = HttpQueryTask.class.getSimpleName();
+
     private String mUrl;
 
     public HttpQueryTask(Context context, String url) {
         super(context);
-        mUrl = url;
+
+        if (NetworkUtils.checkNetworkConnection(context)) {
+            mUrl = url;
+        } else {
+            mUrl = null;
+            Toast.makeText(context, "Cannot connect to server", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -53,4 +62,5 @@ public class HttpQueryTask extends AsyncTaskLoader<List<WeatherInfo>> {
 
         return weathers;
     }
+
 }

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.simpleweatherapp.utils.NetworkUtils;
@@ -52,13 +53,14 @@ public class Fragments {
 
         @Override
         public void onLoadFinished(Loader<List<WeatherInfo>> loader, List<WeatherInfo> data) {
-            ((TextView) getView().findViewById(R.id.card_weather_main)).setText(data.get(0).getWeatherDescription());
-            ((TextView) getView().findViewById(R.id.card_weather_temp)).setText(String.valueOf(data.get(0).getTemp()));
+            if (data != null && !data.isEmpty()) {
+                ((TextView) getView().findViewById(R.id.card_weather_main)).setText(data.get(0).getWeatherDescription());
+                ((TextView) getView().findViewById(R.id.card_weather_temp)).setText(String.valueOf(data.get(0).getTemp()));
+            }
         }
 
         @Override
-        public void onLoaderReset(Loader<List<WeatherInfo>> loader) {
-        }
+        public void onLoaderReset(Loader<List<WeatherInfo>> loader) { }
     }
 
 
@@ -74,6 +76,11 @@ public class Fragments {
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
+
+            ListView listView = getListView();
+            listView.setDivider(null);
+            listView.setDividerHeight(0);
         }
     }
+
 }

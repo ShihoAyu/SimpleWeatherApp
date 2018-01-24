@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 public class SettingActivity extends AppCompatActivity {
+
     private static final String LOG_TAG = SettingActivity.class.getSimpleName();
 
     @Override

@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
  */
 
 public class WeatherInfo {
+
     public static final String KEY_TEMP = "temp";
     public static final String KEY_TEMP_MIN = "temp_min";
     public static final String KEY_TEMP_MAX = "temp_max";

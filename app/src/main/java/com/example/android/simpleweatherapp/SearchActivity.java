@@ -94,9 +94,8 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoadFinished(Loader<List<WeatherInfo>> loader, List<WeatherInfo> weathers) {
         WListAdapter.clear();
 
-        if (weathers != null) {
+        if (weathers != null && !weathers.isEmpty()) {
             WListAdapter.addAll(weathers);
-            listFragment.setListAdapter(WListAdapter);
         }
     }
 
