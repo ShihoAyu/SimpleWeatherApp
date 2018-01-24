@@ -2,15 +2,14 @@ package com.example.android.simpleweatherapp;
 
 import android.Manifest;
 import android.app.ListFragment;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -54,7 +53,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                 }
             });
 
-            loaderManager = getSupportLoaderManager();
+            loaderManager = getLoaderManager();
 
             editSearchCity = (EditText) findViewById(R.id.edit_search_city);
 

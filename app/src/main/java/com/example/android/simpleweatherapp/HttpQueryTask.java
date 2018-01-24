@@ -1,7 +1,7 @@
 package com.example.android.simpleweatherapp;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.android.simpleweatherapp.utils.NetworkUtils;
