@@ -1,9 +1,14 @@
 package com.example.android.simpleweatherapp.utils;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.android.simpleweatherapp.R;
+import com.example.android.simpleweatherapp.SearchActivity;
 import com.example.android.simpleweatherapp.WeatherInfo;
 
 import org.json.JSONArray;
@@ -24,7 +29,11 @@ import java.util.Scanner;
  */
 
 public class NetworkUtils {
+
     private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
+
+    private static final String BASE_QUERY_URL = "http://api.openweathermap.org/data/2.5/forecast";
+    private static final String AUTHORITY = "e81cc0aeb1ec62bb64454c103d60f5e5";
 
     private NetworkUtils() {}
 
@@ -124,5 +133,37 @@ public class NetworkUtils {
         bundle.putLong(WeatherInfo.KEY_TIME_UNIX, time);
 
         return weatherInfo = new WeatherInfo(bundle);
+    }
+
+    public static String createQuery(Context context, String city) {
+        String queryUrl = null;
+
+        if (city != null && !city.isEmpty()) {
+            Uri.Builder builder = (Uri.parse(BASE_QUERY_URL)).buildUpon()
+                    .appendQueryParameter("q", city)
+                    .appendQueryParameter("units", PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.units_key), "standard"))
+                    .appendQueryParameter("appid", AUTHORITY);
+            queryUrl = builder.toString();
+
+            Log.d(LOG_TAG, "query URL created: " + queryUrl);
+        }
+
+        return queryUrl;
+    }
+
+    public static String createQuery(Context context, String latitude, String longitude) {
+        String queryUrl;
+
+        Uri.Builder builder = Uri.parse(BASE_QUERY_URL).buildUpon()
+                .appendQueryParameter("lat", latitude)
+                .appendQueryParameter("lon", longitude)
+                .appendQueryParameter("units", PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.units_key), "standard"))
+                .appendQueryParameter("appid", AUTHORITY);
+
+        queryUrl = builder.toString();
+
+        Log.d(LOG_TAG, "query URL created: " + queryUrl);
+
+        return queryUrl;
     }
 }
